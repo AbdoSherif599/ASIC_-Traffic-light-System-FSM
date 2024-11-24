@@ -14,7 +14,7 @@ always @(posedge clk or posedge rst) begin
     end else begin
         if (counter==0) begin
 
-            current_state <= next_state;
+            current_state = next_state;
              case(current_state)
                 T1: begin
                     if (sensors[1]&sensors[2]) begin
