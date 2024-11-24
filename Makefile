@@ -1,3 +1,5 @@
+all: visualize
+
 visualize: simulate
 	gtkwave test.fst
 
@@ -7,5 +9,5 @@ simulate: compile
 compile:
 	iverilog -otest.vvp tb.v traffic.v
 
-
-
+clean:
+	rm -f test.fst test.vpp

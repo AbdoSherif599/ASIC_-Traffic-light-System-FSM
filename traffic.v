@@ -1,4 +1,4 @@
-module traffic (clk, rst, sensors, traffic);
+module traffic #(parameter SLOT = 15) (clk, rst, sensors, traffic);
 input clk, rst;
 output reg [4:1] traffic;
 input [8:1] sensors;
@@ -10,60 +10,60 @@ reg [3:0] current_state, next_state;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         current_state <= T1;
-        counter<=0;
+        counter<=1;
     end else begin
-        if (counter==0) begin
+        if (counter==1) begin
 
             current_state = next_state;
              case(current_state)
                 T1: begin
                     if (sensors[1]&sensors[2]) begin
-                        counter=60;
+                        counter=SLOT*2;
                     end
                     else if(sensors[1]|sensors[2])begin
-                      counter =30;
+                      counter =SLOT;
                     end
                     else begin
-                      counter=0;
+                      counter=1;
                     end
                 end
                 T2: begin
                     if (sensors[3]&sensors[4]) begin
-                        counter=60;
+                        counter=SLOT*2;
                     end
                     else if(sensors[3]|sensors[4])begin
-                      counter =30;
+                      counter =SLOT;
                     end
                     else begin
-                      counter=0;
+                      counter=1;
                     end
 
                 end
                 T3: begin
                     if (sensors[5]&sensors[6]) begin
-                        counter=60;
+                        counter=SLOT*2;
                     end
                     else if(sensors[5]|sensors[6])begin
-                      counter =30;
+                      counter =SLOT;
                     end
                     else begin
-                      counter=0;
+                      counter=1;
                     end
 
                 end
                 T4: begin
                     if (sensors[7]&sensors[8]) begin
-                        counter=60;
+                        counter=SLOT*2;
                     end
                     else if(sensors[7]|sensors[8])begin
-                      counter =30;
+                      counter =SLOT;
                     end
                     else begin
-                      counter=0;
+                      counter=1;
                     end
 
                 end
-                default: counter = 0;
+                default: counter = 1;
             endcase            
         end
         else begin
