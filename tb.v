@@ -21,8 +21,22 @@ initial begin
     rst = 1;
     #4
     rst = 0;
-
-    #1000
+    #500
+    //If all congested loop in order T1 to T4 waits 10s 
+    sensors='b11111111;
+    #500
+    //If sensors for T1 are all fired then it waits 10s or else 5s
+    sensors='b01110111; // T1 10 sec  T2 5 sec  T3 10 sec  T4 5 sec
+    #500
+    //Fire the next congested Traffic in order
+    sensors='b01000001; // fire T4 and T1 only
+    #500
+    sensors='b01;//fire T1 only
+    #200
+    sensors='b0; // no sensor read
+    #200
+    sensors='b01000000; // act after getting any read of the sensors
+    #200
     $finish;
 end
 
