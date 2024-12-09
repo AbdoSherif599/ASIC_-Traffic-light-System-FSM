@@ -10,6 +10,8 @@ date: "December 9, 2024"
 geometry: a4paper
 fontsize: 12pt
 linestretch: 1.5
+header-includes:
+  - \usepackage{float}
 abstract: |
   This report showcases our design for a fair traffic control system, with variable traffic stop time.
 ---
@@ -210,7 +212,9 @@ endmodule
 # Test bench
 ## Test Strategy
 Stimulate the module with preset cases, trace outputs at exact clock ticks
+
 ## Verilog
+
 ```verilog
 `timescale 100ms/100ms
 
@@ -285,7 +289,39 @@ initial begin
     rst = 0;
     testing_success=1;
 
-    // Resetting Feature
+    // Test 1
+    
+    // Test 2
+  
+    // Test 3
+
+    // Test 4
+
+    // Test 5  
+    
+    // Test 6   
+    
+    // Test 7
+    
+if (testing_success==1) begin
+     $display("\n\n\nModule passed test successfuly.");
+end
+else begin
+  $error("\n\n\nModule didnot pass test ");
+end
+       
+        $stop;
+    end
+endmodule
+```
+
+\newpage
+
+## Simulation
+
+### Test 1
+```verilog
+// Resetting Feature
     $display("Testing reset then testing if traffic 1 and traffic 2 are half congested");
     @(negedge clk);
     sensors = 'b00001010;
@@ -309,10 +345,19 @@ initial begin
     check_traffic_state(4,2,4,4,1);
     sensors='b11111111;
     repeat(3)@(negedge clk);
-        
-    
-   
-    $display("\n\n\nTesting if all traffics are fully congested");
+```
+
+---
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb1.jpeg}
+\caption{(Test 1) Testing reset then testing if traffic 1 and traffic 2 are half congested}
+\end{figure}
+
+### Test 2
+```verilog
+$display("\n\n\nTesting if all traffics are fully congested");
     //If all congested loop in order T1 to T4 waits 10s 
     
     check_traffic_state(4,4,1,4,2);
@@ -333,7 +378,18 @@ initial begin
     sensors='b01110111;
     repeat(3)@(negedge clk);
 
-   
+```
+
+---
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb2.jpeg}
+\caption{(Test 2) Testing if all traffics are fully congested}
+\end{figure}
+
+### Test 3
+```verilog
     $display("\n\n\nTesting if  traffic 1 and traffic 3 are fully congested
      and traffic 2 and traffic 4 are half congested");
     //If sensors for T1 are all fired then it waits 10s or else 5s
@@ -355,8 +411,18 @@ initial begin
     check_traffic_state(4,2,4,4,3);
     sensors='b01000001; // fire T4 and T1 only
     repeat(3)@(negedge clk);
+```
 
- 
+---
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb3.jpeg}
+\caption{(Test 3) Testing if  traffic 1 and traffic 3 are fully congested and traffic 2 and traffic 4 are half congested}
+\end{figure}
+
+### Test 4
+```verilog
     //Fire the next congested Traffic in order
     $display("\n\n\nTesting Fire the next congested Traffic in order ,
     if  traffic 1 and traffic 4 are half congested");
@@ -378,9 +444,18 @@ initial begin
     check_traffic_state(2,4,4,4,4);
     sensors='b01;//fire T1 only
     repeat(3)@(negedge clk);
+```
 
+---
 
-    
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{report/tb4.jpeg}
+  \caption{(Test 4) Testing Fire the next congested Traffic in order ,if  traffic 1 and traffic 4 are half congested}
+\end{figure}
+
+### Test 5
+```verilog
     $display("\n\n\nTesting Fire the next congested Traffic in order ,
     if  traffic 1 is half congested");
      check_traffic_state(1,4,4,4,5);
@@ -395,8 +470,19 @@ initial begin
     repeat(15)@(negedge clk);
     check_traffic_state(2,4,4,4,5);
     sensors='b0; // no sensor read
-    repeat(3)@(negedge clk);    
-    
+    repeat(3)@(negedge clk);  
+```
+
+---
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb5.jpeg}
+\caption{(Test 5) Testing Fire the next congested Traffic in order ,if  traffic 1 is half congested}
+\end{figure}
+
+### Test 6
+```verilog
      $display("\n\n\nTesting Stayin current state if no congested traffic");
     check_traffic_state(1,4,4,4,6);
     repeat(15)@(negedge clk);
@@ -407,8 +493,19 @@ initial begin
     check_traffic_state(1,4,4,4,6);
     repeat(15)@(negedge clk);
     sensors='b01000000; // act after getting any read of the sensors
-    repeat(3)@(negedge clk);    
-    
+    repeat(3)@(negedge clk); 
+```
+
+---
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb6.jpeg}
+\caption{(Test 6) Testing Stayin current state if no congested traffic}
+\end{figure}
+
+### Test 7
+```verilog
 $display("\n\n\nTesting act after getting any read of the sensors, 
 in this case traffic 4 is half congested");
     
@@ -420,32 +517,11 @@ in this case traffic 4 is half congested");
     repeat(15)@(negedge clk);
     check_traffic_state(4,4,4,2,7);
     repeat(3)@(negedge clk);    
-    
-if (testing_success==1) begin
-     $display("\n\n\nModule passed test successfuly.");
-end
-else begin
-  $error("\n\n\nModule didnot pass test ");
-end
-       
-        $stop;
-    end
-endmodule
 ```
+---
 
-\newpage
-
-## Simulation
-![Testing reset then testing if traffic 1 and traffic 2 are half congested](report/tb1.jpeg){#fig:tb_1 width=100%}
-
-![Testing if all traffics are fully congested](report/tb2.jpeg){#fig:tb_2 width=100%}
-
-![Testing if  traffic 1 and traffic 3 are fully congested and traffic 2 and traffic 4 are half congested](report/tb3.jpeg){#fig:tb_3 width=100%}
-
-![Testing Fire the next congested Traffic in order ,if  traffic 1 and traffic 4 are half congested](report/tb4.jpeg){#fig:tb_4 width=100%}
-
-![Testing Fire the next congested Traffic in order ,if  traffic 1 is half congested](report/tb5.jpeg){#fig:tb_5 width=100%}
-
-![Testing Stayin current state if no congested traffic](report/tb6.jpeg){#fig:tb_6 width=100%}
-
-![Testing act after getting any read of the sensors, in this case traffic 4 is half congested](report/tb7.jpeg){#fig:tb_7 width=100%}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{report/tb7.jpeg}
+\caption{(Test 7) Testing act after getting any read of the sensors, in this case traffic 4 is half congested}
+\end{figure}
