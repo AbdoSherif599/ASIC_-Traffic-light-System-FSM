@@ -3,9 +3,9 @@ title: "ECE413 -- ASIC Design and Automation"
 subtitle: "Project Report 1"
 author:
   - "Shams El-Din Mohamed Abdel-Monem -- CSE 2101442"
-  - "Abdel-Rahman Sherif -- CSE 210XXXX"
-  - "Ahmed Said El-Sayed -- CSE 210XXXX"
-  - "Mahmoud Essam Nour El-Din -- CSE 200XXXX"
+  - "Abdel-Rahman Sherif -- CSE 2100735"
+  - "Ahmed Said Sayed -- CSE 2101546"
+  - "Mahmoud Essam Nour El-Din -- CSE 2001393"
 date: "December 9, 2024"
 geometry: a4paper
 fontsize: 12pt
@@ -16,12 +16,12 @@ abstract: |
 
 \vspace{24pt}
 
-| Student              | Contribution                                         |
-|----------------------|------------------------------------------------------|
-| Shams El-Din Mohamed | Participated in FSM Design, Written Report           |
-| Abdel-Rahman Sherif  | FSM Design, Module and Test bench                    |
-| Ahmed Saeed          | System Design, Module and Test bench                 |
-| Mahmoud Essam        | Participated in System Design, Module and Test bench |
+| **Student**              | **Contribution**                                     |
+|--------------------------|------------------------------------------------------|
+| **Shams El-Din Mohamed** | Participated in FSM Design, Written Report           |
+| **Abdel-Rahman Sherif**  | FSM Design, Module and Test bench                    |
+| **Ahmed Saeed**          | System Design, Module and Test bench                 |
+| **Mahmoud Essam**        | Participated in System Design, Module and Test bench |
 
 
 \newpage
@@ -36,47 +36,54 @@ abstract: |
 - The cars are stacked first at the light sensor, if there is one car, it does not stop behind the traffic line
 - Only one traffic light is switched at a time
 
-## Design
-- Two light detectors for each intersection for a total of 8 light sensors for 4 intersections
-- The readings of light sensors is all wired to main control panel
-- Control panel is connected to the four traffic light and outputs either 
-  - Green
-  - Yellow
-  - Red
+## Design Overview
+- **Sensors:** Eight light sensors (two per intersection) connected to the control panel.
+- **Control Panel:** Receives sensor readings and controls the traffic lights.
+- **Outputs:**
+  - **Green:** Traffic allowed to proceed.
+  - **Yellow:** Warning state before switching.
+  - **Red:** Traffic must stop.
 
 # Light Algorithm
-Simply put, rotate in order on traffic lights from Traffic light 1 to Traffic light 2 to Traffic light 3 to Traffic light 4 and then to Traffic light 1 again. *This is if all traffic lights are congested evenly*.
+The algorithm follows these rules:
 
-If Traffic Light is overly congested, both sensors are fired, it stays for two traffic light periods, same applies for other traffics lights. *If all traffic sensors are fired, we go back again to rotating on all traffic lights, but this time with a longer period for each one*
+- **Standard Rotation:** Traffic lights are activated sequentially (1 → 2 → 3 → 4 → 1).
+- **Heavy Congestion:** If both sensors for a light are triggered, the green state persists for two cycles (proposed 30 seconds).
+- **Empty Light:** If a light's sensors are inactive, it is skipped, and the next light is activated.
+- **All Congested:** If all lights are congested, the rotation proceeds with extended green durations.
 
-If a Traffic Light is empty, counter expires, rotate to next most congested traffic light directly, or else rotate.
 # Controller Specs
-The specs of the control -- technical wise -- need not be very high performance, a clock speed of *100 Hz* may be more than enough, given synthesizing HDL with the ticks parameter adjusted for the clock speed.
+- **Clock Speed:** A modest 100 Hz clock is sufficient for the controller.
+- **HDL Design:** Adjust clock ticks in the HDL implementation to align with the clock frequency (for accurate timers).
 
 \newpage
 
 # FSM Design
-We decided to rely on a 4 state FSM for output lights, and on a 2 value preset for traffic light counter, one double the time of the other, to allow heavy traffic to be resolved quicker.
+## Overview
 
-## Manual FSM Design
-| State                                                         | Symbol |
-|---------------------------------------------------------------|--------|
-| Traffic Light 1 either Green or Yellow (depending on counter) | T1     |
-| Traffic Light 2 either Green or Yellow (depending on counter) | T2     |
-| Traffic Light 3 either Green or Yellow (depending on counter) | T3     |
-| Traffic Light 4 either Green or Yellow (depending on counter) | T4     |
+We employ a four-state FSM for traffic light control:
+- States represent each light (e.g., T1, T2, T3, T4).
+- Transition conditions depend on sensor inputs and counter expiration.
 
-| Input                                                | Abbreviation |
-|------------------------------------------------------|--------------|
-| Sensors 1 or 2 (First Traffic Light) are fired       | T1*          |
-| Sensors 1 and 2 (First Traffic Light) are not active | ~T1*         |
-| Sensors 3 or 4 (Second Traffic Light) are fired      | T2*          |
-| Sensors 3 or 4 (Second Traffic Light) are not active | ~T2*         |
-| Sensors 5 or 6 (Third Traffic Light) are fired       | T3*          |
-| Sensors 5 or 6 (Third Traffic Light) are not active  | ~T3*         |
-| Sensors 7 or 8 (Fourth Traffic Light) are fired      | T4*          |
-| Sensors 7 or 8 (Fourth Traffic Light) are not active | ~T4*         |
-| Counter expired                                      | CE           |
+## FSM Design
+| **State**                      | **Symbol** |
+|--------------------------------|------------|
+| Traffic Light 1 (Green/Yellow) | T1         |
+| Traffic Light 2 (Green/Yellow) | T2         |
+| Traffic Light 3 (Green/Yellow) | T3         |
+| Traffic Light 4 (Green/Yellow) | T4         |
+
+| **Input Condition**               | **Abbreviation** |
+|-----------------------------------|------------------|
+| Sensor 1 or 2 active (Light 1)    | T1*              |
+| Sensor 1 and 2 inactive (Light 1) | ~T1*             |
+| Sensor 3 or 4 active (Light 2)    | T2*              |
+| Sensor 3 and 4 inactive (Light 2) | ~T2*             |
+| Sensor 5 or 6 active (Light 3)    | T3*              |
+| Sensor 5 and 6 inactive (Light 3) | ~T3*             |
+| Sensor 7 or 8 active (Light 4)    | T4*              |
+| Sensor 7 and 8 inactive (Light 4) | ~T4*             |
+| Counter expired                   | CE               |
 
 
 ```plantuml
@@ -116,7 +123,8 @@ T4 --> T4 : not CE
 # Code
 
 ```verilog
-module traffic #(parameter SLOT = 15,Shift=5) (clk, rst, sensors, traffic1,traffic2,traffic3,traffic4);
+module traffic #(parameter SLOT = 15,Shift=5) (
+clk, rst, sensors, traffic1,traffic2,traffic3,traffic4);
 input clk, rst;
 output reg [2:0] traffic1,traffic2,traffic3,traffic4;
 input [8:1] sensors;
@@ -132,16 +140,22 @@ reg [3:0] current_state, next_state;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         current_state = T1;
-        counter <= sensors[1] & sensors[2] ? Double_slot : sensors[1] | sensors[2] ? Single_Slot : 1;
+        counter <= sensors[1] & sensors[2]
+         ? Double_slot
+         : sensors[1] | sensors[2] ? Single_Slot : 1;
     end else if (counter > 1) begin
         counter <= counter - 1;
     end else begin
         current_state = next_state;
         case (current_state)
-            T1: counter <= sensors[1] & sensors[2] ? Double_slot : sensors[1] | sensors[2] ? Single_Slot : 1;
-            T2: counter <= sensors[3] & sensors[4] ? Double_slot : sensors[3] | sensors[4] ? Single_Slot : 1;
-            T3: counter <= sensors[5] & sensors[6] ? Double_slot : sensors[5] | sensors[6] ? Single_Slot : 1;
-            T4: counter <= sensors[7] & sensors[8] ? Double_slot : sensors[7] | sensors[8] ? Single_Slot : 1;
+            T1: counter <= sensors[1] & sensors[2]
+             ? Double_slot : sensors[1] | sensors[2] ? Single_Slot : 1;
+            T2: counter <= sensors[3] & sensors[4]
+             ? Double_slot : sensors[3] | sensors[4] ? Single_Slot : 1;
+            T3: counter <= sensors[5] & sensors[6]
+             ? Double_slot : sensors[5] | sensors[6] ? Single_Slot : 1;
+            T4: counter <= sensors[7] & sensors[8]
+             ? Double_slot : sensors[7] | sensors[8] ? Single_Slot : 1;
         endcase
     end
 end
@@ -210,7 +224,15 @@ integer testing_success;
 
 always #1 clk =~clk;
 
-traffic #(.SLOT(15),.Shift(3)) dut(.clk(clk), .rst(rst), .sensors(sensors),.traffic1(traffic1),.traffic2(traffic2),.traffic3(traffic3),.traffic4(traffic4));
+traffic #(.SLOT(15),.Shift(3)) dut(
+  .clk(clk),
+  .rst(rst),
+  .sensors(sensors),
+  .traffic1(traffic1),
+  .traffic2(traffic2),
+  .traffic3(traffic3),
+  .traffic4(traffic4)
+);
 task check_traffic_state(
     input [2:0] expected_traffic1,
     input [2:0] expected_traffic2,
@@ -232,7 +254,8 @@ begin
                  (expected_traffic4 == 3'b001) ? "Green" :
                  (expected_traffic4 == 3'b010) ? "Yellow" : "Red");
     end else begin
-        $error("Step %0d: Failed! Expected traffic signals: T1=%s, T2=%s, T3=%s, T4=%s | Actual traffic signals: T1=%s, T2=%s, T3=%s, T4=%s",
+        $error("Step %0d: Failed! Expected traffic signals: T1=%s, T2=%s, T3=%s, T4=%s 
+        | Actual traffic signals: T1=%s, T2=%s, T3=%s, T4=%s",
                step_number,
                (expected_traffic1 == 3'b001) ? "Green" :
                (expected_traffic1 == 3'b010) ? "Yellow" : "Red",
@@ -311,7 +334,8 @@ initial begin
     repeat(3)@(negedge clk);
 
    
-    $display("\n\n\nTesting if  traffic 1 and traffic 3 are fully congested and traffic 2 and traffic 4 are half congested");
+    $display("\n\n\nTesting if  traffic 1 and traffic 3 are fully congested
+     and traffic 2 and traffic 4 are half congested");
     //If sensors for T1 are all fired then it waits 10s or else 5s
      // T1 10 sec  T2 5 sec  T3 10 sec  T4 5 sec
     check_traffic_state(4,4,1,4,3);
@@ -334,7 +358,8 @@ initial begin
 
  
     //Fire the next congested Traffic in order
-    $display("\n\n\nTesting Fire the next congested Traffic in order ,if  traffic 1 and traffic 4 are half congested");
+    $display("\n\n\nTesting Fire the next congested Traffic in order ,
+    if  traffic 1 and traffic 4 are half congested");
     
     check_traffic_state(4,4,4,1,4);
     repeat(15)@(negedge clk);
@@ -356,7 +381,8 @@ initial begin
 
 
     
-    $display("\n\n\nTesting Fire the next congested Traffic in order ,if  traffic 1 is half congested");
+    $display("\n\n\nTesting Fire the next congested Traffic in order ,
+    if  traffic 1 is half congested");
      check_traffic_state(1,4,4,4,5);
     repeat(15)@(negedge clk);
     check_traffic_state(2,4,4,4,5);
@@ -383,7 +409,8 @@ initial begin
     sensors='b01000000; // act after getting any read of the sensors
     repeat(3)@(negedge clk);    
     
-$display("\n\n\nTesting act after getting any read of the sensors, in this case traffic 4 is half congested");
+$display("\n\n\nTesting act after getting any read of the sensors, 
+in this case traffic 4 is half congested");
     
     check_traffic_state(4,4,4,1,7);
     repeat(15)@(negedge clk);
@@ -394,8 +421,6 @@ $display("\n\n\nTesting act after getting any read of the sensors, in this case 
     check_traffic_state(4,4,4,2,7);
     repeat(3)@(negedge clk);    
     
-
-
 if (testing_success==1) begin
      $display("\n\n\nModule passed test successfuly.");
 end
@@ -405,15 +430,10 @@ end
        
         $stop;
     end
-
-
-
-
-
-
-
 endmodule
 ```
+
+\newpage
 
 ## Simulation
 ![Testing reset then testing if traffic 1 and traffic 2 are half congested](report/tb1.jpeg){#fig:tb_1 width=100%}
