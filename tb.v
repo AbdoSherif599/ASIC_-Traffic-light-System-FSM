@@ -76,6 +76,14 @@ initial begin
    check_traffic_state(4,1,4,4,1);
     repeat(15)@(negedge clk);
     check_traffic_state(4,2,4,4,1);
+    repeat(3)@(negedge clk);
+        check_traffic_state(1,4,4,4,1);
+    repeat(15)@(negedge clk);
+    check_traffic_state(2,4,4,4,1);
+    repeat(3)@(negedge clk);
+   check_traffic_state(4,1,4,4,1);
+    repeat(15)@(negedge clk);
+    check_traffic_state(4,2,4,4,1);
     sensors='b11111111;
     repeat(3)@(negedge clk);
         
@@ -128,6 +136,14 @@ initial begin
     //Fire the next congested Traffic in order
     $display("\n\n\nTesting Fire the next congested Traffic in order ,if  traffic 1 and traffic 4 are half congested");
     
+    check_traffic_state(4,4,4,1,4);
+    repeat(15)@(negedge clk);
+    check_traffic_state(4,4,4,2,4);
+    repeat(3)@(negedge clk);
+   check_traffic_state(1,4,4,4,4);
+    repeat(15)@(negedge clk);
+    check_traffic_state(2,4,4,4,4);
+    repeat(3)@(negedge clk);
     check_traffic_state(4,4,4,1,4);
     repeat(15)@(negedge clk);
     check_traffic_state(4,4,4,2,4);
