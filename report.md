@@ -22,7 +22,7 @@ abstract: |
 |--------------------------|------------------------------------------------------|
 | **Shams El-Din Mohamed** | Participated in FSM Design, Written Report           |
 | **Abdel-Rahman Sherif**  | FSM Design, Module and Test bench                    |
-| **Ahmed Saeed**          | System Design, Module and Test bench                 |
+| **Ahmed Said**          | System Design, Module and Test bench                 |
 | **Mahmoud Essam**        | Participated in System Design, Module and Test bench |
 
 
