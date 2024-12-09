@@ -11,3 +11,6 @@ compile:
 
 clean:
 	rm -f test.fst test.vpp
+
+report: report.md
+	pandoc report.md -o report.pdf --filter pandoc-plantuml
