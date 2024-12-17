@@ -9,26 +9,45 @@
 7. Used the Synopsys Formality Equivalence Checking tool to compare the output netlist with the input RTL code.  
 
 # Schematic
-<img src="img/Screenshot 2024-12-15 231946.png" alt="alt text" style="max-width: 600px;">
-<img src="img/Screenshot 2024-12-15 232044.png" alt="alt text" style="max-width: 600px;">
+
+![Schematic 1](img/Screenshot%202024-12-15%20231946.png)
+![Schematic 2](img/Screenshot%202024-12-15%20232044.png)
+
+---
 
 # Synthesis Log
-<img src="img/err_log.png" alt="alt text" style="max-width: 600px;">
+
+![Synthesis Log](img/err_log.png)
+
+---
 
 # Constraints Report
-<img src="img/const_rpt.png" alt="alt text" style="max-width: 600px;">
+
+![Constraints Report](img/const_rpt.png)
+
+---
 
 # Synthesis Script
-<img src="img/syn_script.png" alt="alt text" style="max-width: 600px;">
+
+![Synthesis Script](img/syn_script.png)
+
+---
 
 # Output Netlist
-<img src="img/netlist.png" alt="alt text" style="max-width: 600px;">
+
+![Output Netlist](img/netlist.png)
+
+---
 
 # Formal Verification Reports
-<img src="img/fm_rep2.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep1.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep2.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep3.png" alt="alt text" style="max-width: 600px;">
+
+![Formal Verification Report 1](img/fm_rep2.png)  
+![Formal Verification Report 2](img/fm_rep1.png)  
+![Formal Verification Report 3](img/fm_rep2.png)  
+![Formal Verification Report 4](img/fm_rep3.png)
+
+---
 
 # RTL vs Netlist
-<img src="img/rtl_vs_netlist.png" alt="alt text" style="max-width: 600px;">
+
+![RTL vs Netlist](img/rtl_vs_netlist.png)
