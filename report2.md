@@ -1,4 +1,41 @@
-# Steps Followed
+---
+title: "ECE413 -- ASIC Design and Automation"
+subtitle: "Project Report 1B"
+author:
+  - "Shams El-Din Mohamed Abdel-Monem -- CSE 2101442"
+  - "Abdel-Rahman Sherif -- CSE 2100735"
+  - "Ahmed Said Sayed -- CSE 2101546"
+  - "Mahmoud Essam Nour El-Din -- CSE 2001393"
+date: "December 17, 2024"
+geometry: a4paper
+fontsize: 12pt
+linestretch: 1.5
+header-includes:
+  - \usepackage{float}
+  - \usepackage{graphicx}
+abstract: |
+  This report showcases Synthesis and Formal Verification with constraints.
+---
+
+\vspace{24pt}
+
+| **Student**              | **Contribution**                                                      |
+|--------------------------|-----------------------------------------------------------------------|
+| **Shams El-Din Mohamed** | Setting up hard-disk and running the tools inside the Virtual Machine |
+| **Abdel-Rahman Sherif**  | Synthesis using tool through online meeting                           |
+| **Ahmed Said**           | Formal verification using tool through online meeting                 |
+| **Mahmoud Essam**        | Participated in Synthesis and Formal verification                     |
+
+
+\newpage
+
+\tableofcontents
+\listoffigures
+
+\newpage
+
+# Synthesis and Netlist
+## Steps Followed
 
 1. Edited the `syn_script` file to synthesize the Verilog design.  
 2. Used the `const.tcl` file to apply constraints (clock timing, input delay, output load) on the design.  
@@ -8,27 +45,81 @@
 6. Verified that power consumption and chip area meet the design requirements.  
 7. Used the Synopsys Formality Equivalence Checking tool to compare the output netlist with the input RTL code.  
 
-# Schematic
-<img src="img/Screenshot 2024-12-15 231946.png" alt="alt text" style="max-width: 600px;">
-<img src="img/Screenshot 2024-12-15 232044.png" alt="alt text" style="max-width: 600px;">
+## Schematic
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/Screenshot 2024-12-15 231946.png}
+\caption{Top level module schematic}
+\end{figure}
 
-# Synthesis Log
-<img src="img/err_log.png" alt="alt text" style="max-width: 600px;">
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/Screenshot 2024-12-15 232044.png}
+\caption{Detailed gate-level schematic}
+\end{figure}
 
-# Constraints Report
-<img src="img/const_rpt.png" alt="alt text" style="max-width: 600px;">
+## Synthesis Log
 
-# Synthesis Script
-<img src="img/syn_script.png" alt="alt text" style="max-width: 600px;">
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/err_log.png}
+\caption{Error-free synthesis tool log}
+\end{figure}
 
-# Output Netlist
-<img src="img/netlist.png" alt="alt text" style="max-width: 600px;">
+## Constraints Report
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/const_rpt.png}
+\caption{Violations-free constraints report}
+\end{figure}
 
-# Formal Verification Reports
-<img src="img/fm_rep2.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep1.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep2.png" alt="alt text" style="max-width: 600px;">
-<img src="img/fm_rep3.png" alt="alt text" style="max-width: 600px;">
+## Synthesis Script
 
-# RTL vs Netlist
-<img src="img/rtl_vs_netlist.png" alt="alt text" style="max-width: 600px;">
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/syn_script.png}
+\caption{Synthesis Script}
+\end{figure}
+
+## Output Netlist
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/netlist.png}
+\caption{Netlist}
+\end{figure}
+
+# Formal Verification
+## Reports
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/fm_rep1.png}
+\caption{Formal Verification Logs Snippet 1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/fm_rep2.png}
+\caption{Formal Verification Logs  Snippet 2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/fm_rep3.png}
+\caption{Formal Verification Logs  Snippet 3}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/fm_rep4.png}
+\caption{Formal Verification Logs  Snippet 4}
+\end{figure}
+
+## RTL vs Netlist
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img/rtl_vs_netlist.png}
+\caption{RTL vs Netlist example}
+\end{figure}
+

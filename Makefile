@@ -14,3 +14,6 @@ clean:
 
 report: report.md
 	pandoc report.md -o report.pdf --filter pandoc-plantuml
+
+report2: report2.md
+	pandoc report2.md -o report.pdf
