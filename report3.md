@@ -1,12 +1,12 @@
 ---
 title: "ECE413 -- ASIC Design and Automation"
-subtitle: "Project Report 2"
+subtitle: "Project Report 3"
 author:
   - "Shams El-Din Mohamed Abdel-Monem -- CSE 2101442"
   - "Abdel-Rahman Sherif -- CSE 2100735"
   - "Ahmed Said Sayed -- CSE 2101546"
   - "Mahmoud Essam Nour El-Din -- CSE 2001393"
-date: "December 17, 2024"
+date: "January 25, 2025"
 geometry: a4paper
 fontsize: 12pt
 linestretch: 1.5
@@ -14,7 +14,7 @@ header-includes:
   - \usepackage{float}
   - \usepackage{graphicx}
 abstract: |
-  This report showcases Synthesis and Formal Verification with constraints.
+  This report showcases Layout and PnR.
 ---
 
 ## Final Layout

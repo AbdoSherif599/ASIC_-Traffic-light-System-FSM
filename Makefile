@@ -17,3 +17,6 @@ report: report.md
 
 report2: report2.md
 	pandoc report2.md -o report.pdf
+
+report3: report3.md
+	pandoc report3.md -o report.pdf
